@@ -26,9 +26,7 @@ public class SpringBootIntroApplication {
 			onePiece.setAuthor("Oda");
 			onePiece.setIsbn("8418061774");
 			onePiece.setPrice(BigDecimal.valueOf(200));
-
 			bookService.save(onePiece);
-
 			System.out.println(bookService.getAll());
 		};
 	}
