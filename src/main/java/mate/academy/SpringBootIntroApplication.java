@@ -11,25 +11,23 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class SpringBootIntroApplication {
-	@Autowired
-	private BookService bookService;
+    @Autowired
+    private BookService bookService;
 
-	public static void main(String[] args) {
-		SpringApplication.run(SpringBootIntroApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SpringBootIntroApplication.class, args);
+    }
 
-	@Bean
-	public CommandLineRunner commandLineRunner() {
-		return args -> {
-			Book onePiece = new Book();
-			onePiece.setTitle("One Piece");
-			onePiece.setAuthor("Oda");
-			onePiece.setIsbn("8418061774");
-			onePiece.setPrice(BigDecimal.valueOf(200));
-			bookService.save(onePiece);
-			System.out.println(bookService.getAll());
-		};
-	}
+    @Bean
+    public CommandLineRunner commandLineRunner() {
+        return args -> {
+            Book onePiece = new Book();
+            onePiece.setTitle("One Piece");
+            onePiece.setAuthor("Oda");
+            onePiece.setIsbn("8418061774");
+            onePiece.setPrice(BigDecimal.valueOf(200));
+            bookService.save(onePiece);
+            System.out.println(bookService.getAll());
+        };
+    }
 }
-
-
