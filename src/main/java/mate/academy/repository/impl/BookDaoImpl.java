@@ -37,7 +37,7 @@ public class BookDaoImpl implements BookRepository {
     @Override
     public List<Book> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("SELECT u FROM Books u", Book.class).getResultList();
+            return session.createQuery("SELECT u FROM Book u", Book.class).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find any books ", e);
         }
