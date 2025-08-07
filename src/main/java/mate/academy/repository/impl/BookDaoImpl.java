@@ -31,7 +31,12 @@ public class BookDaoImpl implements BookRepository {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't save book into DB: " + book, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
+
     }
 
     @Override
