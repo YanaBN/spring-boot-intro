@@ -1,6 +1,7 @@
 package mate.academy.repository.impl;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import mate.academy.exeptions.DataProcessingException;
 import mate.academy.model.Book;
@@ -45,6 +46,14 @@ public class BookDaoImpl implements BookRepository {
             return session.createQuery("SELECT u FROM Book u", Book.class).getResultList();
         } catch (Exception e) {
             throw new DataProcessingException("Can't find any books ", e);
+        }
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            Book book = session.find(Book.class, id);
+            return Optional.ofNullable(book);
         }
     }
 }
