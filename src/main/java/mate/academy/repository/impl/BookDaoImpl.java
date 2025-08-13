@@ -1,9 +1,9 @@
 package mate.academy.repository.impl;
 
-import java.util.List;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityTransaction;
+import java.util.List;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import mate.academy.exeptions.DataProcessingException;
