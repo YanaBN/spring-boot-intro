@@ -1,0 +1,6 @@
+package mate.academy.repository;
+
+public class SpecificationKey {
+    public static final String AUTHOR = "author";
+    public static final String TITLE = "title";
+}
