@@ -1,4 +1,4 @@
-package mate.academy.repository;
+package mate.academy.repository.specification;
 
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.BookSearchParametersDto;
