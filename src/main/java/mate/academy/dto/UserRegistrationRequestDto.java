@@ -4,10 +4,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
+import mate.academy.validation.FieldMatch;
 import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
+@FieldMatch(first = "password",
+        second = "repeatPassword",
+        message = "Passwords must match")
 public class UserRegistrationRequestDto {
     @NotBlank
     @Email
