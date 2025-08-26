@@ -21,7 +21,7 @@ public class AuthenticationService {
                 new UsernamePasswordAuthenticationToken(request.email(), request.password())
         );
         var principal = (User) auth.getPrincipal();
-        String token = jwtUtil.generateToken(principal.getEmail());
+        String token = jwtUtil.generateToken(principal.getFirstName());
         return new UserLoginResponseDto(token);
     }
 }
