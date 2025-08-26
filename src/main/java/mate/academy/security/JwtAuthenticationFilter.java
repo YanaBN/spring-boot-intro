@@ -21,14 +21,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
 
-    private String getToken(HttpServletRequest request) {
-        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
-
-        return (StringUtils.hasText(token) && token.startsWith(TOKEN_HEADER))
-                ? token.substring(TOKEN_HEADER.length())
-                : null;
-    }
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -51,5 +43,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private String getToken(HttpServletRequest request) {
+        String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+
+        return (StringUtils.hasText(token) && token.startsWith(TOKEN_HEADER))
+                ? token.substring(TOKEN_HEADER.length())
+                : null;
     }
 }
