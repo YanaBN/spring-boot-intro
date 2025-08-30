@@ -1,9 +1,9 @@
 package mate.academy.mapper;
 
 import mate.academy.config.MapperConfig;
-import mate.academy.dto.CategoryDto;
-import mate.academy.dto.CreateCategoryRequestDto;
-import mate.academy.dto.UpdateCategoryRequestDto;
+import mate.academy.dto.category.CategoryDto;
+import mate.academy.dto.category.CreateCategoryRequestDto;
+import mate.academy.dto.category.UpdateCategoryRequestDto;
 import mate.academy.model.Category;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

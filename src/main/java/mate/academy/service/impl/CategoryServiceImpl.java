@@ -2,10 +2,10 @@ package mate.academy.service.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.dto.BookDtoWithoutCategoryIds;
-import mate.academy.dto.CategoryDto;
-import mate.academy.dto.CreateCategoryRequestDto;
-import mate.academy.dto.UpdateCategoryRequestDto;
+import mate.academy.dto.book.BookDtoWithoutCategoryIds;
+import mate.academy.dto.category.CategoryDto;
+import mate.academy.dto.category.CreateCategoryRequestDto;
+import mate.academy.dto.category.UpdateCategoryRequestDto;
 import mate.academy.exeptions.EntityNotFoundException;
 import mate.academy.mapper.BookMapper;
 import mate.academy.mapper.CategoryMapper;

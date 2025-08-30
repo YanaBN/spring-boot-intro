@@ -1,10 +1,10 @@
 package mate.academy.service;
 
 import java.util.List;
-import mate.academy.dto.BookDtoWithoutCategoryIds;
-import mate.academy.dto.CategoryDto;
-import mate.academy.dto.CreateCategoryRequestDto;
-import mate.academy.dto.UpdateCategoryRequestDto;
+import mate.academy.dto.book.BookDtoWithoutCategoryIds;
+import mate.academy.dto.category.CategoryDto;
+import mate.academy.dto.category.CreateCategoryRequestDto;
+import mate.academy.dto.category.UpdateCategoryRequestDto;
 
 public interface CategoryService {
     List findAll();
