@@ -1,6 +1,5 @@
 package mate.academy.mapper;
 
-import java.util.stream.Collectors;
 import mate.academy.config.MapperConfig;
 import mate.academy.dto.book.BookDto;
 import mate.academy.dto.book.BookDtoWithoutCategoryIds;
@@ -42,7 +41,7 @@ public interface BookMapper {
             bookDto.setCategoryIds(
                     book.getCategories().stream()
                             .map(Category::getId)
-                            .collect(Collectors.toList())
+                            .toList()
             );
         }
     }

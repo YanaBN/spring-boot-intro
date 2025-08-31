@@ -13,6 +13,8 @@ import mate.academy.model.Category;
 import mate.academy.repository.BookRepository;
 import mate.academy.repository.CategoryRepository;
 import mate.academy.service.CategoryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,8 +26,9 @@ public class CategoryServiceImpl implements CategoryService {
     private final BookMapper bookMapper;
 
     @Override
-    public List findAll() {
-        return categoryRepository.findAll();
+    public Page<CategoryDto> findAll(Pageable pageable) {
+        return categoryRepository.findAll(pageable)
+                .map(categoryMapper::toDto);
     }
 
     @Override
@@ -54,7 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteById(Long id) {
         if (!categoryRepository.existsById(id)) {
-            throw new EntityNotFoundException("Can't delete category by Id: " + id);
+            throw new EntityNotFoundException("Category does not exist" + id);
         }
         categoryRepository.deleteById(id);
     }

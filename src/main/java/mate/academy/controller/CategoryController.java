@@ -11,6 +11,10 @@ import mate.academy.dto.category.CreateCategoryRequestDto;
 import mate.academy.dto.category.UpdateCategoryRequestDto;
 import mate.academy.service.BookService;
 import mate.academy.service.CategoryService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -42,8 +46,11 @@ public class CategoryController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     @GetMapping
     @Operation(summary = "Get a list of categories", description = "Get a list of all categories")
-    public List<CategoryDto> getAll() {
-        return categoryService.findAll();
+    public Page<CategoryDto> getAll(
+            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC)
+            Pageable pageable
+    ) {
+        return categoryService.findAll(pageable);
     }
 
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
