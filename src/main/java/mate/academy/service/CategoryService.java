@@ -5,9 +5,11 @@ import mate.academy.dto.BookDtoWithoutCategoryIds;
 import mate.academy.dto.CategoryDto;
 import mate.academy.dto.CreateCategoryRequestDto;
 import mate.academy.dto.UpdateCategoryRequestDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface CategoryService {
-    List findAll();
+    Page<CategoryDto> findAll(Pageable pageable);
 
     CategoryDto getById(Long id);
 
