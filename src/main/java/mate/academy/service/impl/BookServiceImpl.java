@@ -8,7 +8,9 @@ import mate.academy.dto.UpdateBookRequestDto;
 import mate.academy.exeptions.EntityNotFoundException;
 import mate.academy.mapper.BookMapper;
 import mate.academy.model.Book;
+import mate.academy.model.Category;
 import mate.academy.repository.BookRepository;
+import mate.academy.repository.CategoryRepository;
 import mate.academy.repository.specification.BookSpecificationBuilder;
 import mate.academy.service.BookService;
 import org.springframework.data.domain.Page;
@@ -16,16 +18,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final BookSpecificationBuilder bookSpecificationBuilder;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public BookDto save(CreateBookRequestDto requestDto) {
         Book book = bookMapper.toModel(requestDto);
+        List<Category> categories = categoryRepository.findAllById(requestDto.getCategoryIds());
+        if (categories.size() != requestDto.getCategoryIds().size()) {
+            throw new EntityNotFoundException("One or more categories are not found");
+        }
+        book.setCategories(new HashSet<>(categories));
         return bookMapper.toDto(bookRepository.save(book));
     }
 
@@ -57,6 +68,13 @@ public class BookServiceImpl implements BookService {
                 () -> new EntityNotFoundException("Can't update book by id: " + id)
         );
         bookMapper.updateBookFromDto(dto, book);
+        if(dto.getCategoryIds() != null) {
+            List<Category> categories = categoryRepository.findAllById(dto.getCategoryIds());
+            if (categories.size() != dto.getCategoryIds().size()) {
+                throw new EntityNotFoundException("One or more categories not found");
+            }
+            book.setCategories(new HashSet<>(categories));
+        }
         return bookMapper.toDto(bookRepository.save(book));
     }
 
