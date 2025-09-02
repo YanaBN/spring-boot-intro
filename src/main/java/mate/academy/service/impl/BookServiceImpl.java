@@ -1,5 +1,7 @@
 package mate.academy.service.impl;
 
+import java.util.HashSet;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.BookDto;
 import mate.academy.dto.BookSearchParametersDto;
@@ -17,9 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -68,7 +67,7 @@ public class BookServiceImpl implements BookService {
                 () -> new EntityNotFoundException("Can't update book by id: " + id)
         );
         bookMapper.updateBookFromDto(dto, book);
-        if(dto.getCategoryIds() != null) {
+        if (dto.getCategoryIds() != null) {
             List<Category> categories = categoryRepository.findAllById(dto.getCategoryIds());
             if (categories.size() != dto.getCategoryIds().size()) {
                 throw new EntityNotFoundException("One or more categories not found");
