@@ -1,5 +1,8 @@
 package mate.academy.service.impl;
 
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.BookDto;
 import mate.academy.dto.BookSearchParametersDto;
@@ -8,7 +11,9 @@ import mate.academy.dto.UpdateBookRequestDto;
 import mate.academy.exeptions.EntityNotFoundException;
 import mate.academy.mapper.BookMapper;
 import mate.academy.model.Book;
+import mate.academy.model.Category;
 import mate.academy.repository.BookRepository;
+import mate.academy.repository.CategoryRepository;
 import mate.academy.repository.specification.BookSpecificationBuilder;
 import mate.academy.service.BookService;
 import org.springframework.data.domain.Page;
@@ -22,10 +27,12 @@ public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
     private final BookSpecificationBuilder bookSpecificationBuilder;
+    private final CategoryRepository categoryRepository;
 
     @Override
     public BookDto save(CreateBookRequestDto requestDto) {
         Book book = bookMapper.toModel(requestDto);
+        book.setCategories(categoriesIdToCategories(requestDto.getCategoryIds()));
         return bookMapper.toDto(bookRepository.save(book));
     }
 
@@ -57,6 +64,10 @@ public class BookServiceImpl implements BookService {
                 () -> new EntityNotFoundException("Can't update book by id: " + id)
         );
         bookMapper.updateBookFromDto(dto, book);
+
+        if (dto.getCategoryIds() != null) {
+            book.setCategories(categoriesIdToCategories(dto.getCategoryIds()));
+        }
         return bookMapper.toDto(bookRepository.save(book));
     }
 
@@ -67,5 +78,16 @@ public class BookServiceImpl implements BookService {
                 bookSpecificationBuilder.build(bookSearchParametersDto);
         return bookRepository.findAll(bookSpecification, pageable)
                 .map(bookMapper::toDto);
+    }
+
+    private Set<Category> categoriesIdToCategories(List<Long> categoryIds) {
+        if (categoryIds == null || categoryIds.isEmpty()) {
+            return Set.of();
+        }
+        return categoryIds.stream()
+                .map(id -> categoryRepository.findById(id)
+                        .orElseThrow(() ->
+                                new EntityNotFoundException("Category not found with id: " + id)))
+                .collect(Collectors.toSet());
     }
 }
