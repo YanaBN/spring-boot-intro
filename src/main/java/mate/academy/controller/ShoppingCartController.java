@@ -1,8 +1,10 @@
 package mate.academy.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import mate.academy.dto.cart.ShoppingCartItemQuantityDto;
 import mate.academy.dto.cart.ShoppingCartResponseDto;
 import mate.academy.dto.item.CartItemRequestDto;
 import mate.academy.service.ShoppingCartService;
@@ -14,9 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+@Tag(name = "Cart management", description = "Endpoints for managing carts")
 @RestController
 @RequestMapping("/cart")
 @RequiredArgsConstructor
@@ -45,9 +47,12 @@ public class ShoppingCartController {
     @Operation(summary = "Update Quantity", description = "Change the amount of items in the cart")
     public ShoppingCartResponseDto updateQuantity(
             @AuthenticationPrincipal(expression = "id") Long userId,
-            @PathVariable Long cartItemId,
-            @RequestParam int quantity) {
-        return shoppingCartService.updateItemQuantity(userId, cartItemId, quantity);
+            @RequestBody ShoppingCartItemQuantityDto dto) {
+        return shoppingCartService.updateItemQuantity(
+                userId,
+                dto.cartItemId(),
+                dto.quantity()
+        );
     }
 
     @PreAuthorize("hasRole('USER')")
