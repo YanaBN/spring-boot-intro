@@ -1,6 +1,8 @@
 package mate.academy.service.impl;
 
 import java.util.Optional;
+
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.cart.ShoppingCartResponseDto;
 import mate.academy.dto.item.CartItemRequestDto;
@@ -15,6 +17,7 @@ import mate.academy.service.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final ShoppingCartRepository shoppingCartRepository;
@@ -39,6 +42,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Optional<CartItem> existingItemOpt = cart.getCartItems().stream()
                 .filter(i -> i.getBook().getId().equals(requestDto.bookId()))
                 .findFirst();
+
         if (existingItemOpt.isPresent()) {
             CartItem existingItem = existingItemOpt.get();
             existingItem.setQuantity(existingItem.getQuantity() + requestDto.quantity());
@@ -57,11 +61,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart cart = shoppingCartRepository.findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                     "Cart not found for user by id " + userId));
-        CartItem item = cart.getCartItems().stream()
-                .filter(i -> i.getId().equals(itemId))
-                .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Item not found by id " + itemId + " for user with id " + userId));
+        CartItem item = cartItemRepository.findByIdAndShoppingCartUserId(itemId, cart.getId())
+                        .orElseThrow(() -> new EntityNotFoundException(
+                                "Cart item not found with id " + itemId + " for user with id " + userId));
         item.setQuantity(quantity);
         cartItemRepository.save(item);
         return shoppingCartMapper.toDto(cart);
@@ -72,11 +74,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart cart = shoppingCartRepository.findByUserId(userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Cart not found for user by id " + userId));
-        CartItem item = cart.getCartItems().stream()
-                .filter(i -> i.getId().equals(itemId))
-                .findFirst()
+        CartItem item = cartItemRepository.findByIdAndShoppingCartUserId(itemId, cart.getId())
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Item not found by id " + itemId + " for user with id " + userId));
+                        "Cart item not found with id " + itemId + " for user with id " + userId));
         cart.getCartItems().remove(item);
         cartItemRepository.delete(item);
     }

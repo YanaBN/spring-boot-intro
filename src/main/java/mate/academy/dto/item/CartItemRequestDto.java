@@ -1,8 +1,8 @@
 package mate.academy.dto.item;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
-public record CartItemRequestDto(@NotBlank @Positive Long bookId,
+public record CartItemRequestDto(@NotNull @Positive Long bookId,
                                  @Positive int quantity) {
 }
