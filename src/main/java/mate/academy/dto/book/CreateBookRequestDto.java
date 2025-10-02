@@ -1,6 +1,7 @@
-package mate.academy.dto;
+package mate.academy.dto.book;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
@@ -10,17 +11,18 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UpdateBookRequestDto {
+public class CreateBookRequestDto {
     @NotBlank
     private String title;
-    @NotNull
+    @NotBlank
     private String author;
-    @NotNull
+    @NotBlank
     private String isbn;
     @NotNull
     @Positive
     private BigDecimal price;
     private String description;
     private String coverImage;
+    @NotEmpty
     private List<Long> categoryIds;
 }
