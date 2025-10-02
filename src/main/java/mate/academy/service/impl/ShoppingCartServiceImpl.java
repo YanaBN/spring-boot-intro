@@ -1,8 +1,7 @@
 package mate.academy.service.impl;
 
-import java.util.Optional;
-
 import jakarta.transaction.Transactional;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import mate.academy.dto.cart.ShoppingCartResponseDto;
 import mate.academy.dto.item.CartItemRequestDto;
@@ -63,7 +62,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     "Cart not found for user by id " + userId));
         CartItem item = cartItemRepository.findByIdAndShoppingCartUserId(itemId, cart.getId())
                         .orElseThrow(() -> new EntityNotFoundException(
-                                "Cart item not found with id " + itemId + " for user with id " + userId));
+                                "Cart item not found with id " + itemId
+                                        + " for user with id " + userId));
         item.setQuantity(quantity);
         cartItemRepository.save(item);
         return shoppingCartMapper.toDto(cart);
